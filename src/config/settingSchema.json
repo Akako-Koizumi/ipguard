@@ -1,0 +1,109 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "scanMode": {
+      "type": "string",
+      "enum": ["strict", "normal", "loose", "ignore"],
+      "description": "扫描模式：strict=严格、normal=正常、loose=宽松、ignore=忽略"
+    },
+    "imageDetection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "是否启用图片检测功能"
+        },
+        "apiEndpoint": {
+          "type": "string",
+          "description": "图片检测 API 接口地址"
+        },
+        "apiKey": {
+          "type": "string",
+          "description": "图片检测 API 密钥"
+        },
+        "strictMode": {
+          "type": "boolean",
+          "description": "严格模式：true 时检测到风险立即报警，false 时仅记录"
+        }
+      }
+    },
+    "aiDetection": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "是否启用 AI 增强检测功能"
+        },
+        "apiEndpoint": {
+          "type": "string",
+          "description": "AI 检测 API 接口地址"
+        },
+        "apiKey": {
+          "type": "string",
+          "description": "AI 检测 API 密钥"
+        },
+        "model": {
+          "type": "string",
+          "description": "AI 模型名称，如 gpt-4o、gpt-4o-mini 等"
+        }
+      }
+    },
+    "trademarkDetection": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "商标检测配置（预留接口）",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "是否启用商标检测功能"
+        },
+        "apiEndpoint": {
+          "type": "string",
+          "description": "商标检测 API 接口地址"
+        },
+        "apiKey": {
+          "type": "string",
+          "description": "商标检测 API 密钥"
+        },
+        "regions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "检测地区列表，可选值：zh-CN(中国大陆)、zh-Hant(港澳台)、en(英文)、ja(日语)、ko(韩语)",
+          "default": ["zh-CN", "zh-Hant", "en", "ja", "ko"]
+        }
+      }
+    },
+    "userIgnores": {
+      "type": "object",
+      "description": "用户忽略配置，以项目根目录名为 key，值为忽略规则数组",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["font", "image", "language", "license"],
+              "description": "忽略的检测类型"
+            },
+            "pattern": {
+              "type": "string",
+              "description": "忽略的文件路径或名称模式（支持 glob）"
+            },
+            "reason": {
+              "type": "string",
+              "description": "忽略原因说明"
+            }
+          }
+        }
+      }
+    }
+  }
+}

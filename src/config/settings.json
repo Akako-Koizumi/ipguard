@@ -1,0 +1,23 @@
+{
+  "$schema": "./settingSchema.json",
+  "scanMode": "normal",
+  "imageDetection": {
+    "enabled": false,
+    "apiEndpoint": "",
+    "apiKey": "",
+    "strictMode": false
+  },
+  "aiDetection": {
+    "enabled": false,
+    "apiEndpoint": "",
+    "apiKey": "",
+    "model": "gpt-4o"
+  },
+  "trademarkDetection": {
+    "enabled": false,
+    "apiEndpoint": "",
+    "apiKey": "",
+    "regions": ["zh-CN", "zh-Hant", "en", "ja", "ko"]
+  },
+  "userIgnores": {}
+}

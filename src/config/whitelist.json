@@ -1,0 +1,312 @@
+{
+  "whitelist": [
+    {
+      "name": "Noto Sans SC",
+      "style": "无衬线体",
+      "license": "OFL",
+      "language": "简体/繁体",
+      "website": "https://fonts.google.com/specimen/Noto+Sans+SC"
+    },
+    {
+      "name": "Noto Serif SC",
+      "style": "衬线体",
+      "license": "OFL",
+      "language": "简体/繁体",
+      "website": "https://fonts.google.com/specimen/Noto+Serif+SC"
+    },
+    {
+      "name": "Noto Sans",
+      "style": "无衬线体",
+      "license": "OFL",
+      "language": "多语言",
+      "website": "https://fonts.google.com/specimen/Noto+Sans"
+    },
+    {
+      "name": "Noto Serif",
+      "style": "衬线体",
+      "license": "OFL",
+      "language": "多语言",
+      "website": "https://fonts.google.com/specimen/Noto+Serif"
+    },
+    {
+      "name": "Noto Sans Mono",
+      "style": "等宽字体",
+      "license": "OFL",
+      "language": "多语言",
+      "website": "https://fonts.google.com/specimen/Noto+Sans+Mono"
+    },
+    {
+      "name": "Source Han Sans",
+      "style": "无衬线体",
+      "license": "OFL",
+      "language": "简体/繁体/中日韩",
+      "website": "https://github.com/adobe-fonts/source-han-sans"
+    },
+    {
+      "name": "Source Han Serif",
+      "style": "衬线体",
+      "license": "OFL",
+      "language": "简体/繁体/中日韩",
+      "website": "https://github.com/adobe-fonts/source-han-serif"
+    },
+    {
+      "name": "LXGW WenKai",
+      "style": "手写风格",
+      "license": "OFL",
+      "language": "简体/繁体",
+      "website": "https://github.com/lxgw/LxgwWenKai"
+    },
+    {
+      "name": "Ma Shan Zheng",
+      "style": "手写风格",
+      "license": "OFL",
+      "language": "简体",
+      "website": "https://fonts.google.com/specimen/Ma+Shan+Zheng"
+    },
+    {
+      "name": "ZCOOL XiaoWei",
+      "style": "简体",
+      "license": "OFL",
+      "language": "简体",
+      "website": "https://github.com/ECRI-dev/fonts/tree/master/ZCOOL%20XiaoWei"
+    },
+    {
+      "name": "ZCOOL QingKe HuangYou",
+      "style": "黑体",
+      "license": "OFL",
+      "language": "简体",
+      "website": "https://github.com/ECRI-dev/fonts/tree/master/ZCOOL%20QingKe%20HuangYou"
+    },
+    {
+      "name": "JetBrains Mono",
+      "style": "等宽字体",
+      "license": "OFL",
+      "language": "编程",
+      "website": "https://www.jetbrains.com/lp/mono/"
+    },
+    {
+      "name": "Source Code Pro",
+      "style": "等宽字体",
+      "license": "OFL",
+      "language": "编程",
+      "website": "https://fonts.google.com/specimen/Source+Code+Pro"
+    },
+    {
+      "name": "Fira Code",
+      "style": "等宽字体/编程连字",
+      "license": "OFL",
+      "language": "编程",
+      "website": "https://fonts.google.com/specimen/Fira+Code"
+    },
+    {
+      "name": "Inter",
+      "style": "无衬线体",
+      "license": "OFL",
+      "language": "多语言",
+      "website": "https://rsms.me/inter/"
+    },
+    {
+      "name": "Roboto",
+      "style": "无衬线体",
+      "license": "Apache 2.0",
+      "language": "多语言",
+      "website": "https://fonts.google.com/specimen/Roboto"
+    },
+    {
+      "name": "Open Sans",
+      "style": "无衬线体",
+      "license": "Apache 2.0",
+      "language": "多语言",
+      "website": "https://fonts.google.com/specimen/Open+Sans"
+    },
+    {
+      "name": "Lato",
+      "style": "无衬线体",
+      "license": "OFL",
+      "language": "多语言",
+      "website": "https://fonts.google.com/specimen/Lato"
+    },
+    {
+      "name": "Montserrat",
+      "style": "无衬线体",
+      "license": "OFL",
+      "language": "多语言",
+      "website": "https://fonts.google.com/specimen/Montserrat"
+    },
+    {
+      "name": "Fira Sans",
+      "style": "无衬线体",
+      "license": "OFL",
+      "language": "多语言",
+      "website": "https://fonts.google.com/specimen/Fira+Sans"
+    },
+    {
+      "name": "Nunito",
+      "style": "无衬线体/圆润风格",
+      "license": "OFL",
+      "language": "多语言",
+      "website": "https://fonts.google.com/specimen/Nunito"
+    },
+    {
+      "name": "Playfair Display",
+      "style": "衬线体/标题",
+      "license": "OFL",
+      "language": "多语言",
+      "website": "https://fonts.google.com/specimen/Playfair+Display"
+    },
+    {
+      "name": "Libre Baskerville",
+      "style": "衬线体",
+      "license": "OFL",
+      "language": "多语言",
+      "website": "https://fonts.google.com/specimen/Libre+Baskerville"
+    },
+    {
+      "name": "Libre Franklin",
+      "style": "无衬线体",
+      "license": "OFL",
+      "language": "多语言",
+      "website": "https://fonts.google.com/specimen/Libre+Franklin"
+    },
+    {
+      "name": "Work Sans",
+      "style": "无衬线体",
+      "license": "OFL",
+      "language": "多语言",
+      "website": "https://fonts.google.com/specimen/Work+Sans"
+    },
+    {
+      "name": "Poppins",
+      "style": "无衬线体",
+      "license": "OFL",
+      "language": "多语言",
+      "website": "https://fonts.google.com/specimen/Poppins"
+    },
+    {
+      "name": "Oswald",
+      "style": "无衬线体/窄字",
+      "license": "OFL",
+      "language": "多语言",
+      "website": "https://fonts.google.com/specimen/Oswald"
+    },
+    {
+      "name": "Raleway",
+      "style": "无衬线体/优雅",
+      "license": "OFL",
+      "language": "多语言",
+      "website": "https://fonts.google.com/specimen/Raleway"
+    },
+    {
+      "name": "Ubuntu",
+      "style": "无衬线体",
+      "license": "OFL",
+      "language": "多语言",
+      "website": "https://fonts.google.com/specimen/Ubuntu"
+    },
+    {
+      "name": "Bebas Neue",
+      "style": "无衬线体/展示",
+      "license": "OFL",
+      "language": "拉丁",
+      "website": "https://fonts.google.com/specimen/Bebas+Neue"
+    },
+    {
+      "name": "Comic Neue",
+      "style": "手写风格",
+      "license": "OFL",
+      "language": "多语言",
+      "website": "https://fonts.google.com/specimen/Comic+Neue"
+    },
+    {
+      "name": "Pacifico",
+      "style": "手写风格",
+      "license": "OFL",
+      "language": "多语言",
+      "website": "https://fonts.google.com/specimen/Pacifico"
+    },
+    {
+      "name": "Caveat",
+      "style": "手写风格",
+      "license": "OFL",
+      "language": "多语言",
+      "website": "https://fonts.google.com/specimen/Caveat"
+    },
+    {
+      "name": "Arimo",
+      "style": "无衬线体",
+      "license": "Apache 2.0",
+      "language": "多语言",
+      "website": "https://fonts.google.com/specimen/Arimo"
+    },
+    {
+      "name": "Liberation Sans",
+      "style": "无衬线体",
+      "license": "OFL",
+      "language": "多语言",
+      "website": "https://github.com/liberation-fonts/liberation-fonts"
+    },
+    {
+      "name": "DejaVu Sans",
+      "style": "无衬线体",
+      "license": "BSD",
+      "language": "多语言",
+      "website": "https://dejavu-fonts.org/"
+    },
+    {
+      "name": "IPAexMincho",
+      "style": "衬线体",
+      "license": "IPA Font License",
+      "language": "日语",
+      "website": "https://moji.or.jp/ipafont/"
+    },
+    {
+      "name": "IPAexGothic",
+      "style": "无衬线体",
+      "license": "IPA Font License",
+      "language": "日语",
+      "website": "https://moji.or.jp/ipafont/"
+    },
+    {
+      "name": "Noto Sans JP",
+      "style": "无衬线体",
+      "license": "OFL",
+      "language": "日语",
+      "website": "https://fonts.google.com/specimen/Noto+Sans+JP"
+    },
+    {
+      "name": "Noto Serif JP",
+      "style": "衬线体",
+      "license": "OFL",
+      "language": "日语",
+      "website": "https://fonts.google.com/specimen/Noto+Serif+JP"
+    },
+    {
+      "name": "Noto Sans KR",
+      "style": "无衬线体",
+      "license": "OFL",
+      "language": "韩语",
+      "website": "https://fonts.google.com/specimen/Noto+Sans+KR"
+    },
+    {
+      "name": "Spoqa Han Sans",
+      "style": "无衬线体",
+      "license": "OFL",
+      "language": "韩语",
+      "website": "https://spoqa.github.io/"
+    },
+    {
+      "name": "WenQuanYi Micro Hei",
+      "style": "无衬线体",
+      "license": "GFL (GPL + Chinese Extension)",
+      "language": "简体/繁体",
+      "website": "https://github.com/anthonyfok/fonts-wqy-micro-hei"
+    },
+    {
+      "name": "WenQuanYi Zen Hei",
+      "style": "无衬线体",
+      "license": "GFL (GPL + Chinese Extension)",
+      "language": "简体/繁体",
+      "website": "https://github.com/anthonyfok/fonts-wqy-zen-hei"
+    }
+  ]
+}

@@ -1,0 +1,281 @@
+{
+  "blacklist": [
+    {
+      "name": "Microsoft YaHei",
+      "family": ["msyh", "微软雅黑", "Microsoft YaHei UI"],
+      "risk": "high",
+      "license": "专有商业授权",
+      "reason": "微软雅黑为商业授权字体，未授权使用可能面临法律风险",
+      "replacements": [
+        { "name": "Noto Sans SC", "style": "简体/繁体", "license": "OFL" },
+        { "name": "Source Han Sans", "style": "简体/繁体", "license": "OFL" },
+        { "name": "LXGW WenKai", "style": "简体/繁体", "license": "OFL" }
+      ]
+    },
+    {
+      "name": "SimHei",
+      "family": ["simhei", "黑体", "SimHei"],
+      "risk": "high",
+      "license": "专有商业授权",
+      "reason": "黑体为商业授权字体，未授权使用可能面临法律风险",
+      "replacements": [
+        { "name": "Noto Sans SC", "style": "简体", "license": "OFL" },
+        { "name": "Source Han Sans CN", "style": "简体", "license": "OFL" }
+      ]
+    },
+    {
+      "name": "SimSun",
+      "family": ["simsun", "宋体", "SimSun", "SimSun-ExtB"],
+      "risk": "high",
+      "license": "专有商业授权",
+      "reason": "宋体为商业授权字体，未授权使用可能面临法律风险",
+      "replacements": [
+        { "name": "Noto Serif SC", "style": "简体/繁体", "license": "OFL" },
+        { "name": "Source Han Serif", "style": "简体/繁体", "license": "OFL" }
+      ]
+    },
+    {
+      "name": "FZHei",
+      "family": ["FangZhengHeiti", "方正黑体", "FZHei-B12", "FZHei-M12"],
+      "risk": "high",
+      "license": "方正商业授权",
+      "reason": "方正字体为商业授权字体，需购买授权才能商用",
+      "replacements": [
+        { "name": "Noto Sans SC", "style": "简体", "license": "OFL" },
+        { "name": "Source Han Sans CN", "style": "简体", "license": "OFL" }
+      ]
+    },
+    {
+      "name": "FZShuSong",
+      "family": ["FangZhengShuSong", "方正书宋", "FZShuSong-Z12"],
+      "risk": "high",
+      "license": "方正商业授权",
+      "reason": "方正字体为商业授权字体，需购买授权才能商用",
+      "replacements": [
+        { "name": "Noto Serif SC", "style": "简体/繁体", "license": "OFL" },
+        { "name": "Source Han Serif CN", "style": "简体", "license": "OFL" }
+      ]
+    },
+    {
+      "name": "FounderKaiti",
+      "family": ["FangZhengKaiti", "方正楷体", "FZKT-B5", "FZKaTongM18"],
+      "risk": "high",
+      "license": "方正商业授权",
+      "reason": "方正字体为商业授权字体，需购买授权才能商用",
+      "replacements": [
+        { "name": "LXGW WenKai", "style": "简体/繁体", "license": "OFL" },
+        { "name": "Ma Shan Zheng", "style": "简体（手写风格）", "license": "OFL" }
+      ]
+    },
+    {
+      "name": "HanyiSentyTang",
+      "family": ["汉仪尚巍手书", "HYShangWei", "SentyTang"],
+      "risk": "high",
+      "license": "汉仪商业授权",
+      "reason": "汉仪字体为商业授权字体，需购买授权才能商用",
+      "replacements": [
+        { "name": "Ma Shan Zheng", "style": "简体（手写风格）", "license": "OFL" },
+        { "name": "ZCOOL XiaoWei", "style": "简体", "license": "OFL" }
+      ]
+    },
+    {
+      "name": "AdobeSongStd",
+      "family": ["Adobe 宋体 Std", "AdobeSongStd-Light"],
+      "risk": "high",
+      "license": "Adobe 商业授权",
+      "reason": "Adobe 宋体为商业授权字体，需购买授权才能商用",
+      "replacements": [
+        { "name": "Noto Serif SC", "style": "简体/繁体", "license": "OFL" },
+        { "name": "Source Han Serif", "style": "简体/繁体", "license": "OFL" }
+      ]
+    },
+    {
+      "name": "STHeiti",
+      "family": ["华文黑体", "STHeiti", "STHeiti-Light", "STHeiti-Medium"],
+      "risk": "high",
+      "license": "苹果/华文商业授权",
+      "reason": "华文黑体为商业授权字体，仅限苹果系统使用",
+      "replacements": [
+        { "name": "Noto Sans SC", "style": "简体/繁体", "license": "OFL" },
+        { "name": "Source Han Sans", "style": "简体/繁体", "license": "OFL" }
+      ]
+    },
+    {
+      "name": "STKaiti",
+      "family": ["华文楷体", "STKaiti", "STKaiti-Regular"],
+      "risk": "high",
+      "license": "苹果/华文商业授权",
+      "reason": "华文楷体为商业授权字体，仅限苹果系统使用",
+      "replacements": [
+        { "name": "LXGW WenKai", "style": "简体/繁体", "license": "OFL" }
+      ]
+    },
+    {
+      "name": "STSong",
+      "family": ["华文宋体", "STSong", "STSong-Medium"],
+      "risk": "high",
+      "license": "苹果/华文商业授权",
+      "reason": "华文宋体为商业授权字体，仅限苹果系统使用",
+      "replacements": [
+        { "name": "Noto Serif SC", "style": "简体/繁体", "license": "OFL" }
+      ]
+    },
+    {
+      "name": "SIMKAI",
+      "family": ["楷体", "simkai", "Kaiti"],
+      "risk": "high",
+      "license": "专有商业授权",
+      "reason": "楷体为商业授权字体，需购买授权才能商用",
+      "replacements": [
+        { "name": "LXGW WenKai", "style": "简体/繁体", "license": "OFL" },
+        { "name": "Ma Shan Zheng", "style": "简体（手写）", "license": "OFL" }
+      ]
+    },
+    {
+      "name": "SIMFANG",
+      "family": ["仿宋", "simfang", "FangSong"],
+      "risk": "high",
+      "license": "专有商业授权",
+      "reason": "仿宋为商业授权字体，需购买授权才能商用",
+      "replacements": [
+        { "name": "ZCOOL QingKe HuangYou", "style": "可选替代", "license": "OFL" }
+      ]
+    },
+    {
+      "name": "SIMLI",
+      "family": ["隶书", "simli", "LiSu"],
+      "risk": "high",
+      "license": "专有商业授权",
+      "reason": "隶书为商业授权字体，需购买授权才能商用",
+      "replacements": [
+        { "name": "LXGW WenKai", "style": "简体", "license": "OFL" }
+      ]
+    },
+    {
+      "name": "SIMYOU",
+      "family": ["幼圆", "simyou", "YouYuan"],
+      "risk": "high",
+      "license": "专有商业授权",
+      "reason": "幼圆为商业授权字体，需购买授权才能商用",
+      "replacements": [
+        { "name": "ZCOOL XiaoWei", "style": "简体", "license": "OFL" }
+      ]
+    },
+    {
+      "name": "Apple Chancery",
+      "family": ["Apple Chancery", "Apple ChanceryItalic"],
+      "risk": "high",
+      "license": "苹果专有授权",
+      "reason": "Apple Chancery 为苹果专有字体，禁止在其他平台使用",
+      "replacements": [
+        { "name": "Snell Roundhand", "style": "手写风格", "license": "商业" },
+        { "name": "Bradley Hand", "style": "手写风格", "license": "商业" }
+      ]
+    },
+    {
+      "name": "Times New Roman",
+      "family": ["Times New Roman", "TimesNewRomanPS", "TimesNewRomanPS-ItalicMT"],
+      "risk": "medium",
+      "license": "微软许可（Windows附带）",
+      "reason": "Times New Roman 为商业字体，仅在 Windows 系统附带许可，网页使用可能侵权",
+      "replacements": [
+        { "name": "Noto Serif", "style": "衬线体", "license": "OFL" },
+        { "name": "Libre Baskerville", "style": "衬线体", "license": "OFL" },
+        { "name": "Georgia", "style": "衬线体", "license": "商业" }
+      ]
+    },
+    {
+      "name": "Arial",
+      "family": ["Arial", "Arial-Black", "Arial-BoldMT", "Arial-ItalicMT"],
+      "risk": "medium",
+      "license": "微软许可（Windows附带）",
+      "reason": "Arial 为商业字体，仅在 Windows 系统附带许可，网页使用可能侵权",
+      "replacements": [
+        { "name": "Noto Sans", "style": "无衬线体", "license": "OFL" },
+        { "name": "Liberation Sans", "style": "无衬线体", "license": "OFL" },
+        { "name": "Arimo", "style": "无衬线体", "license": "Apache 2.0" }
+      ]
+    },
+    {
+      "name": "Helvetica",
+      "family": ["Helvetica", "Helvetica-Bold", "Helvetica-Oblique"],
+      "risk": "medium",
+      "license": "商业授权",
+      "reason": "Helvetica 为商业授权字体，Adobe版本价格昂贵，网页使用需谨慎",
+      "replacements": [
+        { "name": "Noto Sans", "style": "无衬线体", "license": "OFL" },
+        { "name": "Inter", "style": "无衬线体", "license": "OFL" },
+        { "name": "Arial", "style": "无衬线体（需许可）", "license": "商业" }
+      ]
+    },
+    {
+      "name": "Verdana",
+      "family": ["Verdana", "Verdana-Bold", "Verdana-Italic"],
+      "risk": "medium",
+      "license": "微软许可",
+      "reason": "Verdana 为商业字体，仅 Windows 系统附带许可",
+      "replacements": [
+        { "name": "Noto Sans", "style": "无衬线体", "license": "OFL" },
+        { "name": "DejaVu Sans", "style": "无衬线体", "license": "BSD" }
+      ]
+    },
+    {
+      "name": "Tahoma",
+      "family": ["Tahoma", "Tahoma-Bold"],
+      "risk": "medium",
+      "license": "微软许可",
+      "reason": "Tahoma 为商业字体，仅 Windows 系统附带许可",
+      "replacements": [
+        { "name": "Noto Sans", "style": "无衬线体", "license": "OFL" },
+        { "name": "Liberation Sans", "style": "无衬线体", "license": "OFL" }
+      ]
+    },
+    {
+      "name": "Courier New",
+      "family": ["Courier New", "CourierNewPS-BoldMT", "CourierNewPS-ItalicMT"],
+      "risk": "medium",
+      "license": "微软许可",
+      "reason": "Courier New 为商业字体，网页使用可能侵权",
+      "replacements": [
+        { "name": "Noto Sans Mono", "style": "等宽字体", "license": "OFL" },
+        { "name": "JetBrains Mono", "style": "等宽字体", "license": "OFL" },
+        { "name": "Source Code Pro", "style": "等宽字体", "license": "OFL" }
+      ]
+    }
+  ],
+  "cautions": [
+    {
+      "name": "Georgia",
+      "family": ["Georgia", "Georgia-Bold", "Georgia-Italic"],
+      "risk": "medium",
+      "license": "苹果/商业授权",
+      "reason": "Georgia 在 macOS/iOS 上免费，但其他平台可能需要商业授权",
+      "replacements": [
+        { "name": "Noto Serif", "style": "衬线体", "license": "OFL" },
+        { "name": "Liberation Serif", "style": "衬线体", "license": "OFL" }
+      ]
+    },
+    {
+      "name": "Trebuchet MS",
+      "family": ["Trebuchet MS", "TrebuchetMS-Bold", "TrebuchetMS-Italic"],
+      "risk": "medium",
+      "license": "微软许可",
+      "reason": "Trebuchet MS 为商业字体，仅 Windows 系统附带许可",
+      "replacements": [
+        { "name": "Noto Sans", "style": "无衬线体", "license": "OFL" },
+        { "name": "Ubuntu", "style": "无衬线体", "license": "OFL" }
+      ]
+    },
+    {
+      "name": "Comic Sans MS",
+      "family": ["Comic Sans MS", "ComicSansMS-Bold"],
+      "risk": "medium",
+      "license": "微软许可",
+      "reason": "Comic Sans MS 为商业字体，非正式场合慎用",
+      "replacements": [
+        { "name": "Comic Neue", "style": "手写风格", "license": "OFL" },
+        { "name": "Patrick Hand", "style": "手写风格", "license": "OFL" }
+      ]
+    }
+  ]
+}

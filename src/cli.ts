@@ -2,73 +2,127 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { Command } from 'commander';
-import chalk from 'chalk';
-import { formatReport, scan } from './index';
+import { scan } from './index';
+import { formatReport, CLIOutput } from './report';
+
+export type Region = 'east-asia' | 'europe' | 'north-america' | 'africa' | 'south-america' | 'other';
+
+const VALID_REGIONS: Region[] = ['east-asia', 'europe', 'north-america', 'africa', 'south-america', 'other'];
 
 const program = new Command();
 
-program.name('ipguard').description('IP Guard 核心扫描工具').version('0.1.0');
+program
+  .name('ipguard')
+  .description('IP Guard - AI Service Intellectual Property Risk Scanner')
+  .version('2.0.0');
 
 program
   .command('scan')
-  .argument('[projectPath]', '要扫描的项目路径', '.')
-  .option('--format <format>', '输出格式: text|json|html', 'text')
-  .option('--blacklist <path>', '自定义字体黑名单 JSON 文件')
-  .option('--whitelist <path>', '自定义字体白名单 JSON 文件')
-  .option('--ignore <patterns...>', '额外忽略模式')
+  .argument('[projectPath]', 'Project path to scan', '.')
+  .option('--region <region>', 'Target region for privacy compliance: east-asia|europe|north-america|africa|south-america|other', 'europe')
+  .option('--html', 'Generate HTML report file alongside JSON output', false)
+  .option('--ignore <patterns...>', 'Additional ignore patterns (glob)')
   .action(async (projectPath: string, options) => {
-    try {
-      const customBlacklist = options.blacklist ? await loadListFromFile(options.blacklist, 'blacklist') : undefined;
-      const customWhitelist = options.whitelist ? await loadListFromFile(options.whitelist, 'whitelist') : undefined;
+    const startTime = Date.now();
 
+    const region = normalizeRegion(options.region);
+    if (!region) {
+      outputError({
+        success: false,
+        status: 'failed',
+        data: null,
+        errors: [`Invalid region: ${options.region}. Valid options: ${VALID_REGIONS.join('|')}`],
+        executionTime: Date.now() - startTime,
+        version: '2.0.0',
+        environment: {
+          nodeVersion: process.version,
+          platform: process.platform,
+          region: options.region
+        }
+      });
+      process.exitCode = 1;
+      return;
+    }
+
+    try {
       const report = await scan({
         projectPath: path.resolve(projectPath),
         ignorePatterns: options.ignore,
-        customBlacklist,
-        customWhitelist
+        region
       });
 
-      const format = normalizeFormat(options.format);
-      const output = formatReport(report, format);
-      console.log(output);
+      const exitTime = Date.now() - startTime;
+      const cliOutput = formatReport(report, 'ai-json', exitTime, region);
+
+      console.log(JSON.stringify(cliOutput, null, 2));
+
+      if (options.html) {
+        const htmlOutput = formatReport(report, 'html', exitTime, region);
+        const htmlFileName = `可视化报告.html`;
+        await fs.writeFile(path.join(process.cwd(), htmlFileName), htmlOutput as string, 'utf8');
+        (cliOutput as CLIOutput).htmlReportFile = htmlFileName;
+        console.log(JSON.stringify(cliOutput, null, 2));
+      }
 
       if (report.summary.high > 0) {
         process.exitCode = 2;
+      } else if (report.summary.medium > 0) {
+        process.exitCode = 1;
       }
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
-      console.error(chalk.red(`[ipguard] 扫描失败: ${message}`));
+      outputError({
+        success: false,
+        status: 'failed',
+        data: null,
+        errors: [message],
+        executionTime: Date.now() - startTime,
+        version: '2.0.0',
+        environment: {
+          nodeVersion: process.version,
+          platform: process.platform,
+          region
+        }
+      });
       process.exitCode = 1;
     }
   });
 
 void program.parseAsync(process.argv).catch((error: unknown) => {
   const message = error instanceof Error ? error.message : String(error);
-  console.error(chalk.red(`[ipguard] 执行失败: ${message}`));
+  outputError({
+    success: false,
+    status: 'failed',
+    data: null,
+    errors: [`CLI execution failed: ${message}`],
+    executionTime: Date.now(),
+    version: '2.0.0',
+    environment: {
+      nodeVersion: process.version,
+      platform: process.platform,
+      region: 'unknown'
+    }
+  });
   process.exitCode = 1;
 });
 
-function normalizeFormat(format: string): 'text' | 'json' | 'html' {
-  if (format === 'json' || format === 'html' || format === 'text') {
-    return format;
-  }
-  throw new Error(`不支持的格式: ${format}`);
+function normalizeRegion(region: string): Region | null {
+  const normalized = region.toLowerCase().replace(/\s+/g, '-') as Region;
+  return VALID_REGIONS.includes(normalized) ? normalized : null;
 }
 
-async function loadListFromFile(filePath: string, key: 'blacklist' | 'whitelist'): Promise<string[]> {
-  const raw = await fs.readFile(path.resolve(filePath), 'utf8');
-  const parsed = JSON.parse(raw) as unknown;
+function outputError(output: ReturnType<typeof createErrorOutput>): void {
+  console.error(JSON.stringify(output, null, 2));
+}
 
-  if (Array.isArray(parsed)) {
-    return parsed.filter((item): item is string => typeof item === 'string');
-  }
-
-  if (parsed && typeof parsed === 'object' && key in parsed) {
-    const value = (parsed as Record<string, unknown>)[key];
-    if (Array.isArray(value)) {
-      return value.filter((item): item is string => typeof item === 'string');
-    }
-  }
-
-  throw new Error(`配置文件格式错误: ${filePath}`);
+function createErrorOutput(params: {
+  success: boolean;
+  status: string;
+  data: null;
+  errors: string[];
+  executionTime: number;
+  version: string;
+  environment: { nodeVersion: string; platform: string; region: string };
+}) {
+  return params;
 }

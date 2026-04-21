@@ -65,9 +65,7 @@ function extractPostScriptName(fontPath: string): Promise<string | null> {
 
 export async function detectFonts(
   fontFiles: string[],
-  configDir: string,
-  customBlacklist: string[] = [],
-  customWhitelist: string[] = []
+  configDir: string
 ): Promise<ScanResult[]> {
   const blacklistFile = path.join(configDir, 'blacklist.json');
   const whitelistFile = path.join(configDir, 'whitelist.json');
@@ -76,14 +74,7 @@ export async function detectFonts(
 
   const blacklist = [
     ...blacklistData.blacklist,
-    ...(blacklistData.cautions ?? []),
-    ...customBlacklist.map((name) => ({
-      name,
-      family: [name],
-      risk: 'high' as const,
-      reason: '用户自定义高风险字体',
-      replacements: [{ name: 'Noto Sans', style: '简体/繁体', license: 'OFL' }]
-    }))
+    ...(blacklistData.cautions ?? [])
   ];
 
   const normalizedBlacklist = blacklist.map((rule) => ({
@@ -100,7 +91,7 @@ export async function detectFonts(
     }
   }
 
-  const whitelistSet = new Set([...whitelistNames, ...customWhitelist].map(normalize));
+  const whitelistSet = new Set(whitelistNames.map(normalize));
   const results: ScanResult[] = [];
 
   for (const file of fontFiles) {

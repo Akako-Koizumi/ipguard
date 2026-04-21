@@ -2,25 +2,23 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 import { z } from 'zod';
 import { detectFonts } from './detectors/fontDetector';
-import { detectLanguage, toLanguageResult } from './detectors/languageDetector';
 import { detectLicense, toLicenseResult } from './detectors/licenseDetector';
 import { detectPrivacy, toPrivacyResult } from './detectors/privacyDetector';
 import { runOnlineDetection } from './detectors/onlineDetector';
-import { generateReport, formatReport } from './report';
+import { generateReport, formatReport, CLIOutput } from './report';
 import { scanProjectFiles } from './scanner';
 import { loadSettings, isOnlineMode, shouldIgnore } from './settingsLoader';
 import { debug, warn, error as logError } from './logger';
-import { Report, ScanConfig, LanguageDetection, LicenseAnalysis, ScanResult } from './types';
+import { Report, ScanConfig, LicenseAnalysis, ScanResult, Region } from './types';
 
 const scanConfigSchema = z.object({
   projectPath: z.string().min(1),
   ignorePatterns: z.array(z.string()).optional(),
-  customBlacklist: z.array(z.string()).optional(),
-  customWhitelist: z.array(z.string()).optional()
+  region: z.enum(['east-asia', 'europe', 'north-america', 'africa', 'south-america', 'other']).default('europe')
 });
 
-export type { Report, ScanConfig, ScanResult };
-export { formatReport };
+export type { Report, ScanConfig, ScanResult, CLIOutput };
+export { formatReport, toLicenseResult, toPrivacyResult };
 
 async function readLicenseContent(licenseFiles: string[]): Promise<string | null> {
   if (licenseFiles.length === 0) {
@@ -38,19 +36,6 @@ async function readLicenseContent(licenseFiles: string[]): Promise<string | null
   }
 }
 
-function createDefaultLanguage(): LanguageDetection {
-  return {
-    market: 'other',
-    marketLabel: '未知',
-    languageCode: 'und',
-    confidence: 0,
-    ratio: 0,
-    sampledFiles: 0,
-    sampledCharacters: 0,
-    detector: 'unknown'
-  };
-}
-
 function createDefaultLicense(): LicenseAnalysis {
   return {
     licenseId: null,
@@ -63,7 +48,7 @@ function createDefaultLicense(): LicenseAnalysis {
 }
 
 export async function scan(config: ScanConfig): Promise<Report> {
-  debug('index', 'Starting scan', { projectPath: config.projectPath });
+  debug('index', 'Starting scan', { projectPath: config.projectPath, region: config.region });
 
   let parsed: z.infer<typeof scanConfigSchema>;
   try {
@@ -74,7 +59,7 @@ export async function scan(config: ScanConfig): Promise<Report> {
     throw new Error(`配置无效: ${msg}`);
   }
 
-  let inventory: ReturnType<typeof scanProjectFiles> extends Promise<infer T> ? T : never;
+  let inventory: Awaited<ReturnType<typeof scanProjectFiles>>;
   try {
     inventory = await scanProjectFiles(parsed);
   } catch (err) {
@@ -92,7 +77,7 @@ export async function scan(config: ScanConfig): Promise<Report> {
     };
   }
 
-  let loadedSettings: ReturnType<typeof loadSettings>;
+  let loadedSettings: Awaited<ReturnType<typeof loadSettings>>;
   try {
     loadedSettings = loadSettings(parsed.projectPath);
     debug('index', 'Settings loaded', {
@@ -122,11 +107,34 @@ export async function scan(config: ScanConfig): Promise<Report> {
   const configDir = path.resolve(__dirname, 'config');
   const filteredFontFiles = inventory.fontFiles.filter((f) => !shouldIgnore(f, effectiveIgnores));
   const filteredImageFiles = inventory.imageFiles.filter((f) => !shouldIgnore(f, effectiveIgnores));
+  const region: Region = parsed.region || 'europe';
 
-  const [fonts, langResult, licenseContent, iconResults] = await Promise.all([
-    detectFonts(filteredFontFiles, configDir, parsed.customBlacklist, parsed.customWhitelist),
-    detectLanguage(inventory.languageFiles),
-    readLicenseContent(inventory.licenseFiles),
+  const [fonts, licenseResult, privacyResult, iconResults] = await Promise.all([
+    (async () => {
+      try {
+        return await detectFonts(filteredFontFiles, configDir);
+      } catch (err) {
+        warn('index', `Font detection failed: ${err instanceof Error ? err.message : String(err)}`);
+        return [];
+      }
+    })(),
+    (async () => {
+      try {
+        const content = await readLicenseContent(inventory.licenseFiles);
+        return detectLicense(parsed.projectPath, content);
+      } catch (err) {
+        warn('index', `License detection failed: ${err instanceof Error ? err.message : String(err)}`);
+        return createDefaultLicense();
+      }
+    })(),
+    (async () => {
+      try {
+        return detectPrivacy(parsed.projectPath, inventory.languageFiles, inventory.imageFiles, region);
+      } catch (err) {
+        warn('index', `Privacy detection failed: ${err instanceof Error ? err.message : String(err)}`);
+        return { hasPrivacyRisks: false, confidence: 0, message: '隐私检测执行失败', risks: [], details: ['隐私检测执行过程中发生错误'] };
+      }
+    })(),
     (async () => {
       try {
         const { detectIcons } = await import('./detectors/iconDetector');
@@ -138,37 +146,17 @@ export async function scan(config: ScanConfig): Promise<Report> {
     })()
   ]);
 
-  const [license, privacyResult] = await Promise.all([
-    (async () => {
-      try {
-        return detectLicense(parsed.projectPath, licenseContent);
-      } catch (err) {
-        warn('index', `License detection failed: ${err instanceof Error ? err.message : String(err)}`);
-        return createDefaultLicense();
-      }
-    })(),
-    (async () => {
-      try {
-        return detectPrivacy(parsed.projectPath, inventory.languageFiles, inventory.imageFiles);
-      } catch (err) {
-        warn('index', `Privacy detection failed: ${err instanceof Error ? err.message : String(err)}`);
-        return { hasPrivacyRisks: false, confidence: 0, message: '隐私检测执行失败', risks: [], details: ['隐私检测执行过程中发生错误'] };
-      }
-    })()
-  ]);
-
   debug('index', 'Stage 3 (local detection) completed', {
     fontResults: fonts.length,
-    language: langResult.market,
-    hasLicense: licenseContent !== null,
+    hasLicense: licenseResult.licenseId !== null,
     iconResults: iconResults.length,
-    privacyRisks: privacyResult.risks.length
+    privacyRisks: privacyResult.risks.length,
+    region
   });
 
   const localResults: ScanResult[] = [
     ...fonts,
-    toLanguageResult(langResult),
-    toLicenseResult(license),
+    toLicenseResult(licenseResult),
     toPrivacyResult(privacyResult),
     ...iconResults
   ];
@@ -177,8 +165,6 @@ export async function scan(config: ScanConfig): Promise<Report> {
   let onlineDetectionEnabled = false;
   let onlineDetectionSuccess = false;
   let onlineDetectionError: string | undefined;
-
-  const language = langResult;
 
   if (isOnlineMode(settings)) {
     onlineDetectionEnabled = true;
@@ -212,8 +198,8 @@ export async function scan(config: ScanConfig): Promise<Report> {
     report = generateReport(
       results,
       parsed,
-      language,
-      license,
+      region,
+      licenseResult,
       inventory,
       settings,
       settingsSource,
@@ -231,18 +217,18 @@ export async function scan(config: ScanConfig): Promise<Report> {
       scanMode: settings.scanMode,
       settingsSource,
       language: {
-        market: language.market,
-        marketLabel: language.marketLabel,
-        languageCode: language.languageCode,
-        confidence: language.confidence
+        market: 'other',
+        marketLabel: '未知',
+        languageCode: 'und',
+        confidence: 0
       },
       license: {
-        licenseId: license.licenseId,
-        licenseName: license.licenseName,
-        risk: license.risk,
-        confidence: license.confidence,
-        message: license.message,
-        details: license.details
+        licenseId: licenseResult.licenseId,
+        licenseName: licenseResult.licenseName,
+        risk: licenseResult.risk,
+        confidence: licenseResult.confidence,
+        message: licenseResult.message,
+        details: licenseResult.details
       },
       onlineDetection: {
         enabled: onlineDetectionEnabled,
@@ -271,7 +257,8 @@ export async function scan(config: ScanConfig): Promise<Report> {
   debug('index', 'Scan completed', {
     projectPath: report.projectPath,
     totalResults: report.summary.total,
-    high: report.summary.high
+    high: report.summary.high,
+    region
   });
 
   return report;

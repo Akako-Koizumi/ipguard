@@ -9,6 +9,8 @@ export type LanguageMarket =
   | 'hi'
   | 'other';
 
+export type Region = 'east-asia' | 'europe' | 'north-america' | 'africa' | 'south-america' | 'other';
+
 export type LicenseRisk = 'high' | 'medium' | 'low' | 'unknown';
 
 export interface ScanResult {
@@ -23,8 +25,7 @@ export interface ScanResult {
 export interface ScanConfig {
   projectPath: string;
   ignorePatterns?: string[];
-  customBlacklist?: string[];
-  customWhitelist?: string[];
+  region?: Region;
 }
 
 export interface LanguageDetection {

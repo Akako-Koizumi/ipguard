@@ -28,19 +28,6 @@
 
 **四大检测模块全本地并行执行，扫描高效稳定**
 
-### 🌍 目标市场
-
-项目自动检测目标市场，适配各国法律框架：
-
-| 市场 | 参数值 | 适用法规 |
-|-----|--------|---------|
-| 欧洲 | `--region europe` | GDPR + CCPA |
-| 北美 | `--region north-america` | CCPA + GDPR |
-| 东亚 | `--region east-asia` | GDPR |
-| 南美 | `--region south-america` | LGPD |
-| 非洲 | `--region africa` | POPIA |
-
----
 
 ## 🚀 快速开始
 

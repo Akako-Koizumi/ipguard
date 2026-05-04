@@ -54,16 +54,8 @@ pnpm run build
 
 ### 使用
 
-```bash
-# 扫描（欧洲市场）
-ipguard scan .
 
-# 指定地区
-ipguard scan . --region east-asia
-
-# 生成可视化 HTML 报告
-ipguard scan . --region europe --html
-```
+构建cli与skills后，直接安装到ai编程工具使用即可，在开发收尾阶段ai会自动调用工具检查。
 
 ### 隐私检测覆盖地区
 

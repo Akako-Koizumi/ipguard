@@ -4,35 +4,26 @@ const path = require('node:path');
 const { execSync } = require('node:child_process');
 
 const ROOT_DIR = __dirname;
-const SKILL_SOURCE = path.join(ROOT_DIR, 'packages', 'skills', 'ip-guard', 'SKILL.md');
-const SKILLS_TARGET_BASE = path.join(process.env.HOME || process.env.USERPROFILE, '.agents', 'skills');
+const USER_HOME = process.env.HOME || process.env.USERPROFILE;
 
-function getGlobalNpmPrefix() {
-  try {
-    return execSync('npm root -g', { encoding: 'utf8' }).trim();
-  } catch {
-    if (process.platform === 'win32') {
-      return path.join(process.env.APPDATA || '', 'npm');
-    }
-    return '/usr/local/lib/node_modules';
-  }
-}
+const SKILL_SOURCE = path.join(ROOT_DIR, 'packages', 'skills', 'ip-guard', 'SKILL.md');
+const SKILLS_TARGET = path.join(USER_HOME, '.agents', 'skills', 'ip-guard');
+const CLI_TARGET_BASE = path.join(USER_HOME, '.ipguard');
+const CLI_TARGET_BIN = path.join(CLI_TARGET_BASE, 'bin');
 
 function installSkills() {
-  const targetDir = path.join(SKILLS_TARGET_BASE, 'ip-guard');
   console.log('\n📦 安装 IP Guard Skills...\n');
   console.log(`   源: ${SKILL_SOURCE}`);
-  console.log(`   目标: ${targetDir}`);
+  console.log(`   目标: ${SKILLS_TARGET}`);
 
   if (!fs.existsSync(SKILL_SOURCE)) {
     console.error('\n❌ 安装失败: SKILL.md 源文件不存在');
-    console.error(`   请确认文件路径: ${SKILL_SOURCE}`);
     return false;
   }
 
   try {
-    fs.mkdirSync(targetDir, { recursive: true });
-    fs.copyFileSync(SKILL_SOURCE, path.join(targetDir, 'SKILL.md'));
+    fs.mkdirSync(SKILLS_TARGET, { recursive: true });
+    fs.copyFileSync(SKILL_SOURCE, path.join(SKILLS_TARGET, 'SKILL.md'));
     console.log('✅ Skills 安装成功！');
     return true;
   } catch (error) {
@@ -49,53 +40,57 @@ function installCli() {
   if (!fs.existsSync(distCli)) {
     console.log('   首次安装，正在构建...');
     try {
-      console.log('   执行: npm run build');
       execSync('npm run build', { cwd: ROOT_DIR, stdio: 'inherit' });
-    } catch (error) {
+    } catch {
       console.error('\n❌ 构建失败，请手动执行 npm run build');
       return false;
     }
   }
 
-  const globalPrefix = getGlobalNpmPrefix();
+  console.log(`   目标: ${CLI_TARGET_BIN}`);
 
   try {
+    fs.mkdirSync(CLI_TARGET_BIN, { recursive: true });
+
     if (process.platform === 'win32') {
-      const npmCmd = path.join(globalPrefix, 'ipguard.cmd');
+      const cliCmd = path.join(CLI_TARGET_BIN, 'ipguard.cmd');
       const cliContent = `@echo off\nnode "${distCli}" %*`;
-      fs.writeFileSync(npmCmd, cliContent, 'utf8');
-      console.log(`   Windows 批处理文件: ${npmCmd}`);
+      fs.writeFileSync(cliCmd, cliContent, 'utf8');
+      console.log(`   批处理文件: ${cliCmd}`);
     } else {
-      const binDir = path.join(globalPrefix, '..', 'bin');
-      const linkTarget = path.join(binDir, 'ipguard');
-      fs.mkdirSync(binDir, { recursive: true });
+      const cliShell = path.join(CLI_TARGET_BIN, 'ipguard');
       const cliContent = `#!/bin/sh\nnode "${distCli}" "$@"`;
-      fs.writeFileSync(linkTarget, cliContent, 'utf8');
-      fs.chmodSync(linkTarget, '755');
-      console.log(`   Unix 符号链接: ${linkTarget}`);
+      fs.writeFileSync(cliShell, cliContent, 'utf8');
+      fs.chmodSync(cliShell, '755');
+      console.log(`   Shell 脚本: ${cliShell}`);
     }
     console.log('✅ CLI 安装成功！');
     return true;
   } catch (error) {
     console.error('\n❌ CLI 安装失败:', error.message);
-    console.error('\n💡 请尝试手动全局链接：');
-    console.error('   npm link');
-    console.error('   或');
-    console.error('   pnpm add -g .');
     return false;
   }
+}
+
+function updatePathHint() {
+  console.log('\n📝 请将以下路径添加到 PATH 环境变量：\n');
+  console.log(`   ${CLI_TARGET_BIN}\n`);
+  console.log('   Windows 永久添加（PowerShell 管理员）：');
+  console.log(`   [Environment]::SetEnvironmentVariable("Path", $env:Path + ";${CLI_TARGET_BIN}", "User")`);
+  console.log('\n   或临时测试（当前终端有效）：');
+  console.log(`   $env:Path += ";${CLI_TARGET_BIN}"\n`);
 }
 
 function verifyInstall() {
   console.log('\n🔍 验证安装...\n');
 
-  const skillPath = path.join(SKILLS_TARGET_BASE, 'ip-guard', 'SKILL.md');
-  const skillOk = fs.existsSync(skillPath);
-  console.log(`   Skills: ${skillOk ? '✅' : '❌'} ${skillPath}`);
+  const skillOk = fs.existsSync(path.join(SKILLS_TARGET, 'SKILL.md'));
+  console.log(`   Skills: ${skillOk ? '✅' : '❌'} ${SKILLS_TARGET}`);
 
-  const distCli = path.join(ROOT_DIR, 'dist', 'cli.js');
-  const cliOk = fs.existsSync(distCli);
-  console.log(`   CLI: ${cliOk ? '✅' : '❌'} ${distCli}`);
+  const cliOk = process.platform === 'win32'
+    ? fs.existsSync(path.join(CLI_TARGET_BIN, 'ipguard.cmd'))
+    : fs.existsSync(path.join(CLI_TARGET_BIN, 'ipguard'));
+  console.log(`   CLI: ${cliOk ? '✅' : '❌'} ${CLI_TARGET_BIN}`);
 
   return skillOk && cliOk;
 }
@@ -114,7 +109,8 @@ function main() {
   }
 
   if (verifyInstall()) {
-    console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    updatePathHint();
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     console.log('   ✅ IP Guard 安装成功！');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
     console.log('📖 使用方法：\n');
